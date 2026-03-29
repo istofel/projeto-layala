@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório Técnico - ChocoDelícias</title>
+  <style>
+    /* ===== RESET E BASE ===== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-primary: #4a2c2a;
+      --color-primary-light: #6d4c41;
+      --color-accent: #d4a24e;
+      --color-accent-light: #f5e6c8;
+      --color-danger: #c0392b;
+      --color-danger-light: #fdecea;
+      --color-success: #27ae60;
+      --color-success-light: #eafaf1;
+      --color-info: #2980b9;
+      --color-info-light: #eaf2f8;
+      --color-warning: #e67e22;
+      --color-warning-light: #fef5e7;
+      --color-bg: #f8f6f3;
+      --color-white: #ffffff;
+      --color-text: #333333;
+      --color-text-light: #666666;
+      --color-border: #e0d6cc;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ===== HEADER ===== */
+    .report-header {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+      color: var(--color-white);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .report-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-light), var(--color-accent));
+    }
+
+    .report-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+
+    .badge-pascoa {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-primary);
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ===== MAIN ===== */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ===== SEÇÕES ===== */
+    .report-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid var(--color-accent);
+      display: inline-block;
+    }
+
+    .section-text {
+      color: var(--color-text);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      text-align: justify;
+    }
+
+    /* ===== CARDS KPI ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .kpi-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      border-top: 4px solid var(--color-accent);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .kpi-card .kpi-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-bottom: 0.3rem;
+    }
+
+    .kpi-card .kpi-label {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== CARDS DE PRODUTO ===== */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--color-primary-light);
+    }
+
+    .product-card h4 {
+      font-size: 1.05rem;
+      color: var(--color-primary);
+      margin-bottom: 0.8rem;
+    }
+
+    .product-card .product-detail {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      font-size: 0.9rem;
+      color: var(--color-text-light);
+      border-bottom: 1px dashed var(--color-border);
+    }
+
+    .product-card .product-detail:last-child {
+      border-bottom: none;
+    }
+
+    .product-card .product-detail span:last-child {
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    /* ===== COMPARAÇÃO CAPACIDADE ===== */
+    .capacity-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 700px) {
+      .capacity-comparison {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .capacity-box {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .capacity-box h4 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .capacity-box .capacity-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 0.92rem;
+    }
+
+    .capacity-box .capacity-item:last-child {
+      border-bottom: none;
+    }
+
+    .capacity-box .capacity-item .value {
+      font-weight: 700;
+    }
+
+    .deficit-highlight {
+      background: var(--color-danger-light);
+      border: 2px solid var(--color-danger);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.5rem;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .deficit-highlight .deficit-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .deficit-highlight .deficit-text strong {
+      color: var(--color-danger);
+      font-size: 1.1rem;
+    }
+
+    .deficit-highlight .deficit-text p {
+      margin-top: 0.2rem;
+      font-size: 0.92rem;
+      color: var(--color-text-light);
+    }
+
+    /* ===== TABELA DE CENÁRIOS ===== */
+    .scenarios-table-wrapper {
+      overflow-x: auto;
+      margin-top: 1.5rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+
+    .scenarios-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--color-white);
+      font-size: 0.92rem;
+    }
+
+    .scenarios-table thead th {
+      background: var(--color-primary);
+      color: var(--color-white);
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .scenarios-table tbody td {
+      padding: 0.9rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .scenarios-table tbody tr:hover {
+      background: var(--color-accent-light);
+    }
+
+    .scenarios-table tbody td:first-child {
+      font-weight: 700;
+      color: var(--color-primary);
+      text-align: left;
+    }
+
+    .scenario-badge {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .scenario-badge.conservador { background: var(--color-success-light); color: var(--color-success); }
+    .scenario-badge.moderado { background: var(--color-info-light); color: var(--color-info); }
+    .scenario-badge.agressivo { background: var(--color-danger-light); color: var(--color-danger); }
+
+    /* ===== ALERTAS / GARGALOS ===== */
+    .alert-list {
+      list-style: none;
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .alert-item {
+      background: var(--color-warning-light);
+      border-left: 4px solid var(--color-warning);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .alert-item .alert-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    .alert-item .alert-text {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ===== DIMENSIONAMENTO ===== */
+    .sizing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .sizing-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: 1.3rem;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sizing-card.manter {
+      border-bottom: 3px solid var(--color-success);
+    }
+
+    .sizing-card.ampliar {
+      border-bottom: 3px solid var(--color-danger);
+    }
+
+    .sizing-card .sizing-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    .sizing-card.manter .sizing-tag { background: var(--color-success-light); color: var(--color-success); }
+    .sizing-card.ampliar .sizing-tag { background: var(--color-danger-light); color: var(--color-danger); }
+
+    .sizing-card .sizing-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin: 0.3rem 0;
+    }
+
+    .sizing-card .sizing-label {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    /* ===== PLANO DE AÇÃO ===== */
+    .action-plan {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .action-block {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .action-block h4 {
+      font-size: 1.05rem;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--color-accent-light);
+    }
+
+    .action-block ul {
+      list-style: none;
+    }
+
+    .action-block li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 0.93rem;
+      border-bottom: 1px dashed var(--color-border);
+    }
+
+    .action-block li:last-child {
+      border-bottom: none;
+    }
+
+    .action-block li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.85rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-accent);
+    }
+
+    /* ===== RECOMENDAÇÕES ===== */
+    .recommendations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .recommendation-card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: 1.3rem 1.5rem;
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--color-info);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .recommendation-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .recommendation-card .rec-number {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      background: var(--color-info);
+      color: var(--color-white);
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .recommendation-card .rec-text {
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+
+    /* ===== FOOTER ===== */
+    .report-footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--color-text-light);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--color-border);
+      margin-top: 2rem;
+    }
+
+    /* ===== BARRA DE PROGRESSO VISUAL ===== */
+    .progress-bar-container {
+      margin-top: 0.5rem;
+    }
+
+    .progress-bar-bg {
+      background: #e8e0d8;
+      border-radius: 6px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s ease;
+    }
+
+    .progress-bar-fill.green { background: var(--color-success); }
+    .progress-bar-fill.orange { background: var(--color-warning); }
+    .progress-bar-fill.red { background: var(--color-danger); }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-top: 0.2rem;
+    }
+
+    /* ===== RESPONSIVIDADE ===== */
+    @media (max-width: 768px) {
+      .report-header { padding: 2rem 1rem; }
+      .report-header h1 { font-size: 1.4rem; }
+      main { padding: 1.5rem 1rem; }
+      .section-title { font-size: 1.2rem; }
+      .kpi-card .kpi-value { font-size: 1.4rem; }
+      .action-plan { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .report-header h1 { font-size: 1.2rem; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .sizing-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Estrutura semântica: header, main (com sections), footer -->
+  <header id="report-header"></header>
+  <main id="report-main"></main>
+  <footer id="report-footer"></footer>
+
+  <script>
+    // ==========================================================
+    // DADOS DO RELATÓRIO — Fonte central de conteúdo (JSON)
+    // Para atualizar o relatório, basta modificar este objeto.
+    // ==========================================================
+    const reportData = {
+      titulo: "Relatório Técnico: Ajuste de Capacidade Operacional",
+      empresa: "ChocoDelícias",
+      subtitulo: "Análise de dimensionamento e planejamento operacional",
+      badge: "Especial Páscoa",
+
+      resumoExecutivo: {
+        texto: "Este relatório apresenta um estudo técnico detalhado sobre a capacidade operacional da ChocoDelícias, com foco no dimensionamento necessário para atender ao aumento expressivo de demanda projetado para o período da Páscoa (janeiro a abril). A análise dos dados históricos revela que a operação atual produz em média 31.209 unidades mensais com uma equipe de 89 funcionários. Para a Páscoa, projeta-se uma demanda média de 62.430 unidades mensais, representando um crescimento de aproximadamente 100%.",
+        kpis: [
+          { valor: "31.209", label: "Produção Mensal (un.)" },
+          { valor: "89", label: "Funcionários Atuais" },
+          { valor: "62.430", label: "Demanda Páscoa (un./mês)" },
+          { valor: "~100%", label: "Crescimento Projetado" }
+        ]
+      },
+
+      diagnostico: {
+        indicadores: [
+          { label: "Volume médio de produção", valor: "31.209 unidades/mês" },
+          { label: "Equipe média", valor: "89 funcionários" },
+          { label: "Produtividade média", valor: "≈350 unidades/funcionário/mês" },
+          { label: "Máquinas disponíveis", valor: "15 máquinas" },
+          { label: "Turnos diários", valor: "2 turnos" },
+          { label: "Capacidade total disponível", valor: "257.400 minutos/mês" }
+        ],
+        produtos: [
+          {
+            nome: "Barra Temática",
+            detalhes: [
+              { label: "Tempo por unidade", valor: "1,99 min" },
+              { label: "Produtividade", valor: "~380 un./func./mês" }
+            ]
+          },
+          {
+            nome: "Bombom Especial",
+            detalhes: [
+              { label: "Tempo por unidade", valor: "1,61 min" },
+              { label: "Produtividade", valor: "~364 un./func./mês" }
+            ]
+          },
+          {
+            nome: "Ovo de Páscoa",
+            detalhes: [
+              { label: "Tempo por unidade", valor: "1,80 min" },
+              { label: "Produtividade", valor: "~325 un./func./mês" }
+            ]
+          }
+        ]
+      },
+
+      capacidadeVsDemanda: {
+        maquinario: [
+          { label: "Pico de demanda", valor: "64.456 unidades" },
+          { label: "Tempo de máquina necessário (pico)", valor: "116.003 min" },
+          { label: "Capacidade instalada", valor: "257.400 min/mês" },
+          { label: "Utilização máxima do maquinário", valor: "45%" }
+        ],
+        maoDeObra: [
+          { label: "Capacidade da equipe atual", valor: "~31.150 unidades" },
+          { label: "Necessidade total no pico", valor: "184 funcionários" },
+          { label: "Equipe atual", valor: "89 funcionários" },
+          { label: "Déficit de pessoal", valor: "95 colaboradores" }
+        ],
+        utilizacaoMaquinario: 45,
+        utilizacaoMaoDeObra: 100,
+        deficit: {
+          titulo: "Déficit Crítico de Pessoal",
+          texto: "A equipe atual de 89 funcionários atende apenas 48% da demanda de pico. São necessários 95 colaboradores adicionais para atingir a capacidade requerida de 184 funcionários."
+        }
+      },
+
+      cenarios: [
+        {
+          nome: "Conservador",
+          classe: "conservador",
+          premissa: "90% da meta",
+          demandaMedia: "56.187",
+          tempoMaquina: "101.111 min/mês",
+          pessoal: "160"
+        },
+        {
+          nome: "Moderado",
+          classe: "moderado",
+          premissa: "100% da meta",
+          demandaMedia: "62.430",
+          tempoMaquina: "112.345 min/mês",
+          pessoal: "178"
+        },
+        {
+          nome: "Agressivo",
+          classe: "agressivo",
+          premissa: "120% da meta",
+          demandaMedia: "74.916",
+          tempoMaquina: "134.815 min/mês",
+          pessoal: "214"
+        }
+      ],
+
+      gargalos: [
+        "Mão de obra e processos manuais são o principal limitador da capacidade produtiva.",
+        "Embalagem, controle de qualidade e logística interna são pontos críticos que reduzem o fluxo operacional.",
+        "Ovo de Páscoa apresenta a menor produtividade por funcionário entre todos os produtos (~325 un./func./mês)."
+      ],
+
+      dimensionamento: [
+        { label: "Máquinas", valor: "15", tipo: "manter", detalhe: "Manter as 15 máquinas atuais" },
+        { label: "Turnos", valor: "2", tipo: "manter", detalhe: "Manter 2 turnos diários" },
+        { label: "Equipe (pico)", valor: "184", tipo: "ampliar", detalhe: "Aumentar de 89 para 184 funcionários" },
+        { label: "Temporários", valor: "+95", tipo: "ampliar", detalhe: "Contratar 95 temporários" }
+      ],
+
+      planoDeAcao: {
+        curtoPrazo: {
+          titulo: "Curto Prazo",
+          acoes: [
+            "Priorizar terceirização do volume excedente",
+            "Contratar temporários como plano B",
+            "Restringir horas extras a emergências"
+          ]
+        },
+        medioPrazo: {
+          titulo: "Médio Prazo",
+          acoes: [
+            "Realizar mapeamento de processos",
+            "Fazer estudo de tempos e movimentos",
+            "Balancear linha de produção",
+            "Reduzir gargalos nas etapas manuais"
+          ]
+        }
+      },
+
+      recomendacoes: [
+        "Reduzir dependência de processos manuais",
+        "Investir em automação das etapas subsequentes",
+        "Padronizar embalagens",
+        "Simplificar design dos ovos de Páscoa",
+        "Firmar contratos com parceiros homologados para sazonalidade futura"
+      ]
+    };
+
+
+    // ==========================================================
+    // FUNÇÕES DE RENDERIZAÇÃO
+    // ==========================================================
+
+    /** Renderiza o cabeçalho principal do relatório */
+    function renderHeader(data) {
+      const header = document.getElementById('report-header');
+      header.className = 'report-header';
+      header.innerHTML = `
+        <h1>${data.titulo}</h1>
+        <p class="subtitle">${data.empresa} &mdash; ${data.subtitulo}</p>
+        <span class="badge-pascoa">${data.badge}</span>
+      `;
+    }
+
+    /** Renderiza um bloco de texto de seção */
+    function renderSectionText(text) {
+      return `<p class="section-text">${text}</p>`;
+    }
+
+    /** Renderiza cards de KPIs */
+    function renderKpiCards(kpis) {
+      const cards = kpis.map(k => `
+        <div class="kpi-card">
+          <div class="kpi-value">${k.valor}</div>
+          <div class="kpi-label">${k.label}</div>
+        </div>
+      `).join('');
+      return `<div class="kpi-grid">${cards}</div>`;
+    }
+
+    /** Renderiza cards de produtos */
+    function renderProductCards(produtos) {
+      const cards = produtos.map(p => {
+        const detalhes = p.detalhes.map(d =>
+          `<div class="product-detail"><span>${d.label}</span><span>${d.valor}</span></div>`
+        ).join('');
+        return `<div class="product-card"><h4>${p.nome}</h4>${detalhes}</div>`;
+      }).join('');
+      return `<div class="product-grid">${cards}</div>`;
+    }
+
+    /** Renderiza lista de indicadores do diagnóstico */
+    function renderIndicatorsList(indicadores) {
+      const items = indicadores.map(i =>
+        `<div class="capacity-item"><span>${i.label}</span><span class="value">${i.valor}</span></div>`
+      ).join('');
+      return items;
+    }
+
+    /** Renderiza a barra de progresso visual */
+    function renderProgressBar(percent, colorClass, labelLeft, labelRight) {
+      return `
+        <div class="progress-bar-container">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill ${colorClass}" style="width: ${percent}%"></div>
+          </div>
+          <div class="progress-label">
+            <span>${labelLeft}</span>
+            <span>${labelRight}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    /** Renderiza comparação de capacidade (maquinário vs mão de obra) */
+    function renderCapacityComparison(capData) {
+      const maqItems = capData.maquinario.map(i =>
+        `<div class="capacity-item"><span>${i.label}</span><span class="value">${i.valor}</span></div>`
+      ).join('');
+
+      const moItems = capData.maoDeObra.map(i =>
+        `<div class="capacity-item"><span>${i.label}</span><span class="value">${i.valor}</span></div>`
+      ).join('');
+
+      return `
+        <div class="capacity-comparison">
+          <div class="capacity-box">
+            <h4>Maquinário</h4>
+            ${maqItems}
+            ${renderProgressBar(capData.utilizacaoMaquinario, 'green', 'Utilização', capData.utilizacaoMaquinario + '%')}
+          </div>
+          <div class="capacity-box">
+            <h4>Mão de Obra</h4>
+            ${moItems}
+            ${renderProgressBar(capData.utilizacaoMaoDeObra, 'red', 'Utilização no pico', capData.utilizacaoMaoDeObra + '%')}
+          </div>
+        </div>
+        <div class="deficit-highlight">
+          <div class="deficit-icon">&#9888;</div>
+          <div class="deficit-text">
+            <strong>${capData.deficit.titulo}</strong>
+            <p>${capData.deficit.texto}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    /** Renderiza a tabela de cenários */
+    function renderScenariosTable(cenarios) {
+      const rows = cenarios.map(c => `
+        <tr>
+          <td><span class="scenario-badge ${c.classe}">${c.nome}</span></td>
+          <td>${c.premissa}</td>
+          <td>${c.demandaMedia}</td>
+          <td>${c.tempoMaquina}</td>
+          <td>${c.pessoal}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <div class="scenarios-table-wrapper">
+          <table class="scenarios-table">
+            <thead>
+              <tr>
+                <th>Cenário</th>
+                <th>Premissa</th>
+                <th>Demanda Média (un./mês)</th>
+                <th>Tempo de Máquina</th>
+                <th>Pessoal Necessário</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    /** Renderiza lista de gargalos como alertas */
+    function renderAlertList(gargalos) {
+      const items = gargalos.map(g =>
+        `<li class="alert-item">
+          <span class="alert-icon">&#9888;</span>
+          <span class="alert-text">${g}</span>
+        </li>`
+      ).join('');
+      return `<ul class="alert-list">${items}</ul>`;
+    }
+
+    /** Renderiza cards de dimensionamento */
+    function renderSizingCards(dimensionamento) {
+      const cards = dimensionamento.map(d => `
+        <div class="sizing-card ${d.tipo}">
+          <span class="sizing-tag">${d.tipo === 'manter' ? 'Manter' : 'Ampliar'}</span>
+          <div class="sizing-value">${d.valor}</div>
+          <div class="sizing-label">${d.label}</div>
+          <p style="font-size:0.8rem;color:var(--color-text-light);margin-top:0.4rem">${d.detalhe}</p>
+        </div>
+      `).join('');
+      return `<div class="sizing-grid">${cards}</div>`;
+    }
+
+    /** Renderiza o plano de ação (curto e médio prazo) */
+    function renderActionPlan(plano) {
+      function renderBlock(block) {
+        const items = block.acoes.map(a => `<li>${a}</li>`).join('');
+        return `
+          <div class="action-block">
+            <h4>${block.titulo}</h4>
+            <ul>${items}</ul>
+          </div>
+        `;
+      }
+      return `<div class="action-plan">${renderBlock(plano.curtoPrazo)}${renderBlock(plano.medioPrazo)}</div>`;
+    }
+
+    /** Renderiza as recomendações estratégicas */
+    function renderRecommendations(recs) {
+      const cards = recs.map((r, i) => `
+        <div class="recommendation-card">
+          <span class="rec-number">${i + 1}</span>
+          <p class="rec-text">${r}</p>
+        </div>
+      `).join('');
+      return `<div class="recommendations-grid">${cards}</div>`;
+    }
+
+    /** Cria uma seção completa com título */
+    function createSection(id, title, contentHtml) {
+      return `
+        <section class="report-section" id="${id}">
+          <h2 class="section-title">${title}</h2>
+          ${contentHtml}
+        </section>
+      `;
+    }
+
+    /** Renderiza o footer */
+    function renderFooter(data) {
+      const footer = document.getElementById('report-footer');
+      footer.className = 'report-footer';
+      const year = new Date().getFullYear();
+      footer.innerHTML = `<p>${data.empresa} &mdash; Relatório gerado para fins de planejamento operacional &mdash; ${year}</p>`;
+    }
+
+
+    // ==========================================================
+    // MONTAGEM DA PÁGINA
+    // ==========================================================
+    function renderReport(data) {
+      renderHeader(data);
+
+      const main = document.getElementById('report-main');
+      let html = '';
+
+      // 1. Resumo Executivo
+      html += createSection('resumo', 'Resumo Executivo',
+        renderSectionText(data.resumoExecutivo.texto) +
+        renderKpiCards(data.resumoExecutivo.kpis)
+      );
+
+      // 2. Diagnóstico da Operação Atual
+      html += createSection('diagnostico', 'Diagnóstico da Operação Atual',
+        `<div class="capacity-box" style="margin-bottom:1.2rem">${renderIndicatorsList(data.diagnostico.indicadores)}</div>` +
+        renderProductCards(data.diagnostico.produtos)
+      );
+
+      // 3. Análise de Capacidade vs Demanda
+      html += createSection('capacidade', 'Análise de Capacidade vs Demanda',
+        renderCapacityComparison(data.capacidadeVsDemanda)
+      );
+
+      // 4. Projeções para Páscoa (Cenários)
+      html += createSection('cenarios', 'Projeções para Páscoa',
+        renderScenariosTable(data.cenarios)
+      );
+
+      // 5. Gargalos Identificados
+      html += createSection('gargalos', 'Gargalos Identificados',
+        renderAlertList(data.gargalos)
+      );
+
+      // 6. Dimensionamento Necessário
+      html += createSection('dimensionamento', 'Dimensionamento Necessário',
+        renderSizingCards(data.dimensionamento)
+      );
+
+      // 7. Plano de Ação Operacional
+      html += createSection('plano-acao', 'Plano de Ação Operacional',
+        renderActionPlan(data.planoDeAcao)
+      );
+
+      // 8. Recomendações Estratégicas
+      html += createSection('recomendacoes', 'Recomendações Estratégicas',
+        renderRecommendations(data.recomendacoes)
+      );
+
+      main.innerHTML = html;
+      renderFooter(data);
+    }
+
+    // Inicializa o relatório ao carregar a página
+    renderReport(reportData);
+  </script>
+</body>
+</html>
